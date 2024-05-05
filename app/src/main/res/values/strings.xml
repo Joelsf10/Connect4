@@ -1,0 +1,7 @@
+<resources>
+        <string name="app_name">Connect Four</string>
+        <string name="Ayuda">Ayuda</string>
+        <string name="Jugar_Partida">Jugar Partida</string>
+        <string name="Salir">Salir</string>
+        <string name="restart_game">Restart Game</string>
+</resources>
