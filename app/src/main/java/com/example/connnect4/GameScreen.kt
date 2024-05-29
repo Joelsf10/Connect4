@@ -88,8 +88,8 @@ fun Board(viewModel: GameViewModel) {
                     .background(color = Color.Transparent, shape = RoundedCornerShape(50)),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = when (cell) {
-                        "X" -> Color.Red
-                        "O" -> Color.Yellow
+                        "Player" -> Color.Red
+                        "System" -> Color.Yellow
                         else -> Color.LightGray
                     },
                     contentColor = Color.White

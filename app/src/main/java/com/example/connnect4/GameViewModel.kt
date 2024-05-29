@@ -17,10 +17,12 @@ class GameViewModel(
     fun play(column: Int) {
         if (!gameActive.value || winner.value != null) return
 
+        val newBoard = board.value.map { it.copyOf() }.toTypedArray()
+
         for (row in boardHeight - 1 downTo 0) {
-            if (board.value[row][column].isEmpty()) {
-                board.value[row][column] = currentPlayer.value
-                if (checkForWin(row, column)) {
+            if (newBoard[row][column].isEmpty()) {
+                newBoard[row][column] = currentPlayer.value
+                if (checkForWin(row, column, newBoard)) {
                     winner.value = currentPlayer.value
                     gameActive.value = false
                 } else {
@@ -29,13 +31,14 @@ class GameViewModel(
                 break
             }
         }
+        board.value = newBoard
     }
 
     private fun togglePlayer() {
         currentPlayer.value = if (currentPlayer.value == "Player") "System" else "Player"
     }
 
-    private fun checkForWin(row: Int, column: Int): Boolean {
+    private fun checkForWin(row: Int, column: Int, board: Array<Array<String>>): Boolean {
         val directions = listOf(
             Direction(0, 1),
             Direction(1, 0),
@@ -44,7 +47,7 @@ class GameViewModel(
         )
 
         for (dir in directions) {
-            val count = 1 + countDirection(row, column, dir) + countDirection(row, column, dir.invert())
+            val count = 1 + countDirection(row, column, dir, board) + countDirection(row, column, dir.invert(), board)
             if (count >= 4) {
                 return true
             }
@@ -52,12 +55,12 @@ class GameViewModel(
         return false
     }
 
-    private fun countDirection(row: Int, column: Int, direction: Direction): Int {
+    private fun countDirection(row: Int, column: Int, direction: Direction, board: Array<Array<String>>): Int {
         var r = row + direction.deltaRow
         var c = column + direction.deltaColumn
         var count = 0
 
-        while (r in 0 until boardHeight && c in 0 until boardWidth && board.value[r][c] == currentPlayer.value) {
+        while (r in 0 until boardHeight && c in 0 until boardWidth && board[r][c] == currentPlayer.value) {
             count++
             r += direction.deltaRow
             c += direction.deltaColumn
@@ -69,6 +72,7 @@ class GameViewModel(
         fun invert() = Direction(-deltaRow, -deltaColumn)
     }
 }
+
 
 
 

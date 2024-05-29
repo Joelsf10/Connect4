@@ -40,6 +40,7 @@ fun AppNavigation() {
         composable("resultScreen") {
             ResultScreen(navController = navController, configViewModel.alias.value)  // Añade aquí los argumentos necesarios si los hay
         }
+
     }
 }
 

@@ -71,6 +71,16 @@ fun MainMenuScreen(navController: NavController) {
                     Text("Jugar Partida", fontSize = 18.sp)
                 }
                 Button(
+                    onClick = { navController.navigate("gameConsult") },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
+                ) {
+                    Text("Consultar Partidas", fontSize = 18.sp)
+                }
+                Button(
                     onClick = {
                         if (context is ComponentActivity) {
                             context.finish()  // Llama a finish para cerrar la aplicación
