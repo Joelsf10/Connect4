@@ -23,7 +23,10 @@ fun ConfigScreen(navController: NavController, viewModel: ConfigViewModel = view
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Configuración del Juego") }, backgroundColor = MaterialTheme.colors.primary)
+            TopAppBar(
+                title = { Text("Configuración del Juego") },
+                backgroundColor = MaterialTheme.colors.primary
+            )
         },
         content = { padding ->
             BoxWithConstraints {

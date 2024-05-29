@@ -38,8 +38,8 @@ fun Connect4Theme(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun GameScreen(navController: NavController, gridSize: Int, playerAlias: String) {
-    val gameViewModel: GameViewModel = viewModel { GameViewModel(gridSize, gridSize, playerAlias) }
+fun GameScreen(navController: NavController, gridSize: Int) {
+    val gameViewModel: GameViewModel = viewModel { GameViewModel(gridSize, gridSize) }
     Connect4Theme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -50,7 +50,10 @@ fun GameScreen(navController: NavController, gridSize: Int, playerAlias: String)
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text("Connect 4 Game", style = MaterialTheme.typography.h4.copy(color = MaterialTheme.colors.onBackground))
+                Text(
+                    "Connect 4 Game",
+                    style = MaterialTheme.typography.h4.copy(color = MaterialTheme.colors.onBackground)
+                )
                 Spacer(Modifier.height(16.dp))
                 Board(gameViewModel)
                 Spacer(Modifier.height(16.dp))
@@ -59,6 +62,8 @@ fun GameScreen(navController: NavController, gridSize: Int, playerAlias: String)
         }
     }
 }
+
+
 
 @Composable
 fun Board(viewModel: GameViewModel) {
@@ -103,14 +108,22 @@ fun GameStatus(viewModel: GameViewModel, navController: NavController) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(16.dp)
     ) {
-        Text(
-            text = if (viewModel.gameActive.value) "Turn: ${viewModel.currentPlayer.value}" else {
+        if (viewModel.gameActive.value) {
+            Text(
+                text = "Turn: ${viewModel.currentPlayer.value}",
+                style = MaterialTheme.typography.h5.copy(fontSize = 18.sp),
+                color = MaterialTheme.colors.onSurface
+            )
+        } else {
+            Text(
+                text = "Game Over: ${viewModel.winner.value ?: "It's a Draw!"} Wins!",
+                style = MaterialTheme.typography.h5.copy(fontSize = 18.sp),
+                color = MaterialTheme.colors.onSurface
+            )
+            LaunchedEffect(Unit) {
                 navController.navigate("resultScreen")
-                "Game Over: ${viewModel.winner.value ?: "It's a Draw!"} Wins!"
-            },
-            style = MaterialTheme.typography.h5.copy(fontSize = 18.sp),
-            color = MaterialTheme.colors.onSurface
-        )
+            }
+        }
     }
 }
 

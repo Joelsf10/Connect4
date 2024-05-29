@@ -35,10 +35,10 @@ fun AppNavigation() {
         composable("help") { HelpScreen(navController) }
         composable("config") { ConfigScreen(navController, configViewModel) }
         composable("gameScreen") {
-            GameScreen(navController, configViewModel.gridSize.value.toInt(), configViewModel.alias.value)
+            GameScreen(navController, configViewModel.gridSize.value.toInt())
         }
         composable("resultScreen") {
-            ResultScreen(navController = navController, winnerName = configViewModel.alias.value)
+            ResultScreen(navController = navController, configViewModel.alias.value)  // Añade aquí los argumentos necesarios si los hay
         }
     }
 }

@@ -4,6 +4,8 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,57 +19,74 @@ import com.example.connnect4.R
 @Composable
 fun MainMenuScreen(navController: NavController) {
     val context = LocalContext.current
-    Surface(color = MaterialTheme.colors.background, modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            // Usar Image en lugar de Text para el título
-            Image(
-                painter = painterResource(id = R.drawable.connect4),
-                contentDescription = "Logo de Connect4",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 40.dp)
-            )
-            Button(
-                onClick = { navController.navigate("help") },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
-            ) {
-                Text("Ayuda", fontSize = 18.sp)
-            }
-            Button(
-                onClick = { navController.navigate("config") },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
-            ) {
-                Text("Jugar Partida", fontSize = 18.sp)
-            }
-            Button(
-                onClick = {
-                    if (context is ComponentActivity) {
-                        context.finish()  // Llama a finish para cerrar la aplicación
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Menú Principal") },
+                actions = {
+                    IconButton(onClick = { navController.navigate("config") }) {
+                        Icon(Icons.Default.Settings, contentDescription = "Configuración")
                     }
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                backgroundColor = MaterialTheme.colors.primary
+            )
+        }
+    ) { paddingValues ->
+        Surface(color = MaterialTheme.colors.background, modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
+                    .fillMaxSize()
+                    .padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("Salir", fontSize = 18.sp)
+                Image(
+                    painter = painterResource(id = R.drawable.connect4),
+                    contentDescription = "Logo de Connect4",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 40.dp)
+                )
+                Button(
+                    onClick = { navController.navigate("help") },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
+                ) {
+                    Text("Ayuda", fontSize = 18.sp)
+                }
+                Button(
+                    onClick = { navController.navigate("gameScreen") },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
+                ) {
+                    Text("Jugar Partida", fontSize = 18.sp)
+                }
+                Button(
+                    onClick = {
+                        if (context is ComponentActivity) {
+                            context.finish()  // Llama a finish para cerrar la aplicación
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    elevation = ButtonDefaults.elevation(defaultElevation = 8.dp)
+                ) {
+                    Text("Salir", fontSize = 18.sp)
+                }
             }
         }
     }
 }
+
 
