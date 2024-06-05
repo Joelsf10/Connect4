@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 
@@ -45,22 +46,78 @@ fun GameScreen(navController: NavController, gridSize: Int) {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    "Connect 4 Game",
-                    style = MaterialTheme.typography.h4.copy(color = MaterialTheme.colors.onBackground)
-                )
-                Spacer(Modifier.height(16.dp))
-                Board(gameViewModel)
-                Spacer(Modifier.height(16.dp))
-                GameStatus(gameViewModel, navController)
+            if (isTablet()) {
+                TwoPanelLayout(gameViewModel, navController)
+            } else {
+                SinglePanelLayout(gameViewModel, navController)
             }
         }
     }
+}
+
+@Composable
+fun SinglePanelLayout(viewModel: GameViewModel, navController: NavController) {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            "Connect 4 Game",
+            style = MaterialTheme.typography.h4.copy(color = MaterialTheme.colors.onBackground)
+        )
+        Spacer(Modifier.height(16.dp))
+        Board(viewModel)
+        Spacer(Modifier.height(16.dp))
+        GameStatus(viewModel, navController)
+    }
+}
+
+@Composable
+fun TwoPanelLayout(viewModel: GameViewModel, navController: NavController) {
+    Row(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)
+        ) {
+            SinglePanelLayout(viewModel, navController)
+        }
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "Información de progreso",
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Text(
+                    text = "Jugador actual: ${viewModel.currentPlayer.value}",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Text(
+                    text = "Estado del juego: ${if (viewModel.gameActive.value) "Activo" else "Finalizado"}",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun isTablet(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.smallestScreenWidthDp >= 600
 }
 
 
