@@ -1,4 +1,4 @@
-package com.example.connnect4
+package com.example.connect4
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,43 +11,32 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
-import com.example.connect4.ConfigScreen
-import com.example.connect4.ConfigViewModel
-import com.example.connect4.GameConsultScreen
-import com.example.connect4.GameConsultViewModel
-import com.example.connect4.GameConsultViewModelFactory
-import com.example.connect4.GameScreen
-import com.example.connect4.HelpScreen
-import com.example.connect4.MainMenuScreen
-import com.example.connect4.ResultScreen
 import com.example.connnect4.Database.AppDatabase
-import com.example.connnect4.Database.DatabaseProvider
 
 class MainActivity : ComponentActivity() {
     private lateinit var database: AppDatabase
     private val gameConsultViewModel: GameConsultViewModel by viewModels {
         GameConsultViewModelFactory(database)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "connect4-database"
         ).build()
+
         setContent {
             AppNavigation(gameConsultViewModel)
         }
     }
 }
 
-
 @Composable
 fun AppNavigation(gameConsultViewModel: GameConsultViewModel) {
     val navController = rememberNavController()
-    val configViewModel = viewModel<ConfigViewModel>()  // Así compartimos el ViewModel entre pantallas
-    val context = LocalContext.current
-    val database = DatabaseProvider.getDatabase(context)
-    val gameConsultViewModel: GameConsultViewModel = viewModel(factory = GameConsultViewModelFactory(database))
+    val configViewModel = viewModel<ConfigViewModel>()
 
     NavHost(navController = navController, startDestination = "main") {
         composable("main") { MainMenuScreen(navController) }
@@ -57,12 +46,13 @@ fun AppNavigation(gameConsultViewModel: GameConsultViewModel) {
             GameScreen(navController, configViewModel.gridSize.value.toInt())
         }
         composable("resultScreen") {
-            ResultScreen(navController = navController, configViewModel.alias.value)  // Añade aquí los argumentos necesarios si los hay
+            ResultScreen(navController = navController, configViewModel.alias.value)
         }
         composable("gameConsultScreen") {
             GameConsultScreen(navController = navController, viewModel = gameConsultViewModel)
         }
     }
 }
+
 
 
