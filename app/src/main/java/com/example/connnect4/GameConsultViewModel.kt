@@ -30,4 +30,3 @@ class GameConsultViewModelFactory(private val database: AppDatabase) : ViewModel
 
 
 
-
